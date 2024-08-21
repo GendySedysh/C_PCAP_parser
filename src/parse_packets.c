@@ -55,37 +55,34 @@ void PrintAllAndTcpPackets(char *input_file) {
     printf("Number of TCP packets in file: %d\n", tcp_packet_counter);
 }
 
-char* AddParametrToFilter(char* filter, char* parametr, char* arg, short *counter) {
-    if (*counter != 0) {
-        strcat(filter, " and ");
-    }
+char* AddParametrToFilter(char* filter, char* parametr, char* arg) {
+    strcat(filter, " and ");
     strcat(filter, parametr);
     strcat(filter, arg);
-    (*counter)++;
 
     return filter;
 }
 
 char* CreateFilter(t_arguments arguments) {
     char *filter = malloc(sizeof(char) * 100);
-    short counter = 0;
     filter[0] = '\0';
 
+    strcat(filter, "tcp");
     char port[5];
     if (arguments.dstport != 0) {
-        AddParametrToFilter(filter, "dst port ", my_itoa(arguments.dstport, port), &counter);
+        AddParametrToFilter(filter, "dst port ", my_itoa(arguments.dstport, port));
     }
 
     if (arguments.srcport != 0) {
-        AddParametrToFilter(filter, "src port ", my_itoa(arguments.srcport, port), &counter);
+        AddParametrToFilter(filter, "src port ", my_itoa(arguments.srcport, port));
     }
 
     if (arguments.dstaddr[0] != '\0'){
-        AddParametrToFilter(filter, "dst ", arguments.dstaddr, &counter);
+        AddParametrToFilter(filter, "dst ", arguments.dstaddr);
     }
 
     if (arguments.srcaddr[0] != '\0'){
-        AddParametrToFilter(filter, " src ", arguments.srcaddr, &counter);
+        AddParametrToFilter(filter, "src ", arguments.srcaddr);
     }
 
     return filter;
